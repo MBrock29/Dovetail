@@ -1,26 +1,34 @@
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
 import { useModByIdQuery } from "../../../services/api";
+import { Loading } from "../loading/loading";
+import { addCurrentMod } from "../../../services/currentMod";
+import s from "./[id].module.scss";
 
 const MoreInfo = () => {
   const router = useRouter();
-  const id = router.query;
-  const num = id.id;
-  const { data, error, isLoading, isFetching, isSuccess } =
-    useModByIdQuery(num);
+  const num = router.query.id;
+  const { data, error, isLoading, isSuccess } = useModByIdQuery(num);
+  const dispatch = useDispatch();
+  const info = useSelector((state) => state.currentMod.value);
 
-  console.log(data);
+  const runDispatch = () => {
+    dispatch(addCurrentMod(data.data));
+  };
+  isSuccess && runDispatch();
 
   return (
     <main>
-      {isLoading && <h2>...Loading</h2>}
-      {isFetching && <h2>...Fetching</h2>}
+      {isLoading && <Loading />}
       {error && <h2>Error</h2>}
       {isSuccess && (
-        <div>
-          <h3>title={data.data.title}</h3>
-          <h3> subscriberCount={data.data.subscriberCount}</h3>
-          <h3>id={data.data.shortDescription}</h3>
-          <h3>platform={data.data.ownerPlatformOss}</h3>
+        <div className={s.container}>
+          <h3>{info.title}</h3>
+          <h3> {info.subscriberCount}</h3>
+          <h3>{info.shortDescription}</h3>
+          <h3>{info.ownerPlatformOss}</h3>
+          <h3>{info.createdAt}</h3>
+          <h3>{info.category}</h3>
         </div>
       )}
     </main>

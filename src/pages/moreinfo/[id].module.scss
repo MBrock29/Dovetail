@@ -1,0 +1,19 @@
+@import "../../Styles/Colors.scss";
+@import "../../Styles/Variables.scss";
+
+.container {
+  width: 600px;
+  height: fit-content;
+  background-color: $dark-blue;
+  padding: $space-nano;
+  margin: $space-mega;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: $x2;
+  color: $white;
+  &:hover {
+    cursor: pointer;
+  }
+}
